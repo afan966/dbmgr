@@ -7,16 +7,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.afan.dbmgr.DBException;
 import com.afan.dbmgr.config.DBErrCode;
 import com.afan.dbmgr.config.SQLColumn;
 import com.afan.dbmgr.config.SQLTable;
 import com.afan.dbmgr.config.TableSchema;
 import com.afan.dbmgr.handler.ConvertHandler;
-import com.afan.dbmgr.pool.DBConnMgr;
-import com.afan.dbmgr.pool.DefaultDBConnMgr;
+import com.afan.dbmgr.pool.AfanDBConnect;
+import com.afan.dbmgr.pool.DBConnect;
 import com.afan.dbmgr.pool.druid.DruidMgr;
 
 /**
@@ -25,8 +27,9 @@ import com.afan.dbmgr.pool.druid.DruidMgr;
  */
 public class ResultSetWrapper<T> {
 	private static final Logger logger = LoggerFactory.getLogger(StatementWrapper.class);
-	// 连接器
-	private DBConnMgr conn;
+	
+	DBConnect conn = null;
+	AfanDBConnect afaconn = null;
 	// 结果集
 	private ResultSet rs;
 	// 表结果对象
@@ -40,15 +43,15 @@ public class ResultSetWrapper<T> {
 	// 结果数
 	private AtomicInteger recod = new AtomicInteger();
 
-	public ResultSetWrapper(DBConnMgr conn, Class<T> clazz) throws DBException {
+	public ResultSetWrapper(DBConnect conn, Class<T> clazz) throws DBException {
 		this.conn = conn;
 		this.rs = conn.executeQuery();
 		init(rs, clazz);
 	}
 
-	public ResultSetWrapper(DefaultDBConnMgr conn, Class<T> clazz) throws DBException {
-		this.conn = conn;
-		this.rs = conn.executeQuery();
+	public ResultSetWrapper(AfanDBConnect afaconn, Class<T> clazz) throws DBException {
+		this.afaconn = afaconn;
+		this.rs = afaconn.executeQuery();
 		init(rs, clazz);
 	}
 
@@ -65,29 +68,6 @@ public class ResultSetWrapper<T> {
 		}
 	}
 
-	// 数据库类型对应的java类型
-	private void initJavaType() throws DBException {
-		try {
-			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-				this.sqlTable.getSqlColumnByColumn(rsmd.getColumnName(i)).setJdbcJavaType(rsmd.getColumnClassName(i));
-			}
-		} catch (SQLException e) {
-			throw new DBException(DBErrCode.ERR_WRESULT_INIT, "ResultSetWrapper-init", e);
-		}
-	}
-
-	public void close() {
-		try {
-			if (conn != null)
-				conn.close();
-			if (rs != null && !rs.isClosed()) {
-				rs.close();
-			}
-		} catch (SQLException e) {
-			logger.error("ResultSetWrapper-close", e);
-		}
-	}
-
 	// 执行解析
 	public void exec() throws DBException {
 		try {
@@ -99,9 +79,7 @@ public class ResultSetWrapper<T> {
 			throw new DBException(DBErrCode.ERR_WRESULT_EXEC, "ResultSetWrapper-exec", e);
 		} finally {
 			// 自动关闭
-			if (conn != null && conn.isAutoClose()) {
-				close();
-			}
+			close();
 		}
 	}
 
@@ -116,6 +94,17 @@ public class ResultSetWrapper<T> {
 	public List<T> queryList() throws DBException {
 		exec();
 		return results;
+	}
+	
+	// 数据库类型对应的java类型
+	private void initJavaType() throws DBException {
+		try {
+			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+				this.sqlTable.getSqlColumnByColumn(rsmd.getColumnName(i)).setJdbcJavaType(rsmd.getColumnClassName(i));
+			}
+		} catch (SQLException e) {
+			throw new DBException(DBErrCode.ERR_WRESULT_INIT, "ResultSetWrapper-init", e);
+		}
 	}
 
 	// 组装单条对象
@@ -166,6 +155,22 @@ public class ResultSetWrapper<T> {
 
 	public int autoRecod() {
 		return recod.incrementAndGet();
+	}
+	
+	public void close() {
+		try {
+			if (conn != null && conn.isAutoClose()) {
+				conn.close();
+			}
+			if (afaconn != null && afaconn.isAutoClose()) {
+				afaconn.close();
+			}
+			if (rs != null && !rs.isClosed()) {
+				rs.close();
+			}
+		} catch (SQLException e) {
+			logger.error("ResultSetWrapper-close", e);
+		}
 	}
 
 }

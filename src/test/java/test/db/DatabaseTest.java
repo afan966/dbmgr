@@ -1,13 +1,12 @@
 package test.db;
 
-import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ch.qos.logback.core.joran.spi.JoranException;
 import com.afan.dbmgr.DBException;
+import com.afan.dbmgr.pool.DBConnect;
 import com.afan.dbmgr.pool.DefaultDBConnMgr;
 import com.afan.dbmgr.pool.druid.DruidMgr;
 import com.afan.dbmgr.util.LogBackConfigLoader;
@@ -24,7 +23,7 @@ public class DatabaseTest {
 //			return new ResultSetWrapper<UserAccountConsume>(conn, UserAccountConsume.class).queryList();
 //		}
 		int i=0;
-		DefaultDBConnMgr conn = new DefaultDBConnMgr();
+		DBConnect conn = new DefaultDBConnMgr();
 		try {
 			PreparedStatement ptmt = conn.prepareStatement("select count(1) from seller where shopType = 'B' and shopLevel = ?", 8);
 			

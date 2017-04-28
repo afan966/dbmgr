@@ -16,25 +16,28 @@ import com.afan.dbmgr.util.SQLUtil;
  * @author cf
  * @Description: 使用默认的 connect,preporetment,result
  */
-public class DefaultDBConnMgr extends DBConnMgr {
+public class DefaultDBConnMgr extends DBConnMgr implements DBConnect {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultDBConnMgr.class);
 
 	public DefaultDBConnMgr() {
-		this.useWrapper = false;
+		this(null);
 	}
-
-	public DefaultDBConnMgr(String dbName) throws DBException {
+	
+	public DefaultDBConnMgr(String dbName) {
 		this(dbName, true, true);
 	}
 
-	public DefaultDBConnMgr(String dbName, boolean autoCommit, boolean autoClose) throws DBException {
+	public DefaultDBConnMgr(String dbName, boolean autoCommit, boolean autoClose) {
 		long t1 = System.currentTimeMillis();
-		connInit(dbName, autoCommit, autoClose);
+		try {
+			connInit(dbName, autoCommit, autoClose);
+		} catch (DBException e) {
+			logger.error("init connection error", e);
+		}
 		long used = (System.currentTimeMillis() - t1);
 		if (used > MINTIME) {
 			logger.debug("init {} conn used:{}ms", dbName, used);
 		}
-		this.useWrapper = false;
 	}
 
 	public void init(boolean autoCommit, boolean autoClose) throws DBException {
@@ -224,33 +227,6 @@ public class DefaultDBConnMgr extends DBConnMgr {
 		return false;
 	}
 	
-	/**
-	 * 设置第一个参数 wrapper模式实现标准对象注入参数
-	 */
-	public void setStandardParam(Object param) throws DBException {
-		throw new DBException(DBErrCode.ERR_MGR_UN_SUPPORT, "DefaultDBConnMgr Method not supported : standard param");
-	}
-
-	public long insertReturnAutoId(Object value) throws DBException {
-		throw new DBException(DBErrCode.ERR_MGR_UN_SUPPORT, "DefaultDBConnMgr Method not supported : insertReturnAutoId");
-	}
-
-	public int insert(Object value) throws DBException {
-		throw new DBException(DBErrCode.ERR_MGR_UN_SUPPORT, "DefaultDBConnMgr Method not supported : insert");
-	}
-
-	public int update(Object value) throws DBException {
-		throw new DBException(DBErrCode.ERR_MGR_UN_SUPPORT, "DefaultDBConnMgr Method not supported : update");
-	}
-
-	public int delete(Object value) throws DBException {
-		throw new DBException(DBErrCode.ERR_MGR_UN_SUPPORT, "DefaultDBConnMgr Method not supported : delete");
-	}
-
-	public void query(Object value) throws DBException {
-		throw new DBException(DBErrCode.ERR_MGR_UN_SUPPORT, "DefaultDBConnMgr Method not supported : query");
-	}
-
 	public int insertOrUpdate(Object value) throws DBException {
 		Object[] sqlParams = SQLUtil.insertOrUpdate(value, null, null);
 		if (sqlParams != null && sqlParams.length == 2) {
