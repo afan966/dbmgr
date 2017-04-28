@@ -18,7 +18,7 @@ import com.afan.dbmgr.util.StringUtil;
  * @author cf
  * 
  */
-public abstract class DBConnMgr implements AutoCloseable {
+public abstract class DBConnMgr {
 	private static final Logger logger = LoggerFactory.getLogger(DBConnMgr.class);
 	
 	//日志输出时间标准
@@ -41,7 +41,6 @@ public abstract class DBConnMgr implements AutoCloseable {
 	// 自动关闭,实现了AutoCloseable会自动调用close方法(jdk1.7的规范)
 	protected boolean autoClose = true;
 	// 默认不使用包装
-	protected boolean useWrapper = false;
 	protected boolean hasError = false;
 
 	public boolean isAutoClose() {
@@ -294,153 +293,13 @@ public abstract class DBConnMgr implements AutoCloseable {
 	}
 	
 	/**
-	 * 自动设置对象标准参数 default模式：设置第一个参数
-	 * wrapper模式：设置对象参数，根据标准对象自动填充参数（需要标注@DBTable，@DBColumn）
-	 * 
-	 * @param param
-	 * @throws DBException
-	 */
-	public abstract void setStandardParam(Object param) throws DBException;
-
-	/**
-	 * 设置参数后，批量加入 调用方法: PreparedStatement ptmt = conn.prepareStatement();
-	 * ptmt.setInt(); conn.addBatch();
-	 * 
-	 * @throws DBException
-	 */
-	public abstract void addBatch() throws DBException;
-
-	/**
-	 * 设置参数后，批量加入 调用方法: conn.addBatch(values);
-	 * 
-	 * @param values
-	 * @throws DBException
-	 */
-	public abstract void addBatch(Object... values) throws DBException;
-	
-	
-
-	/**
 	 * 执行查询
 	 * 
 	 * @return
 	 * @throws DBException
 	 */
 	public abstract ResultSet executeQuery() throws DBException;
-
-	/**
-	 * 执行查询sql
-	 * 
-	 * @param sql
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract ResultSet executeQuery(String sql) throws DBException;
 	
-	/**
-	 * 执行变更sql
-	 * 
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract int executeUpdate() throws DBException;
-
-	/**
-	 * 执行变更sql
-	 * 
-	 * @param sql
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract int executeUpdate(String sql) throws DBException;
-	
-	/**
-	 * 执行批量sql
-	 * 
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract int[] executeBatch() throws DBException;
-	
-	
-
-	/**
-	 * wrapper模式执行查询根据标准的主键（@DBTable.primaryClumns）
-	 * 
-	 * @param value
-	 * @throws DBException
-	 */
-	public abstract void query(Object value) throws DBException;
-
-	/**
-	 * wrapper模式执行插入根据标准（@DBTable）
-	 * 
-	 * @param value
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract int insert(Object value) throws DBException;
-
-	/**
-	 * wrapper模式执行修改插入根据标准（@DBTable）
-	 * 
-	 * @param value
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract int update(Object value) throws DBException;
-
-	/**
-	 * wrapper模式执行删除插入根据标准（@DBTable）
-	 * 
-	 * @param value
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract int delete(Object value) throws DBException;
-	
-	/**
-	 * 查询是否存在
-	 * 
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract boolean existQuery() throws DBException;
-
-	/**
-	 * 返回上次的自增id MYSQL的LAST_INSERT_ID()
-	 * 
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract long getLastInsertId() throws DBException;
-
-	/**
-	 * 插入并返回上次的自增id MYSQL的LAST_INSERT_ID()
-	 * 
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract long insertReturnAutoId() throws DBException;
-	
-	/**
-	 * wrapper模式执行插入并返回自增ID根据标准（@DBTable）
-	 * 
-	 * @param value
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract long insertReturnAutoId(Object value) throws DBException;
-
-	/**
-	 * 执行插入或修改根据标准（@DBTable）
-	 * 
-	 * @param value
-	 * @return
-	 * @throws DBException
-	 */
-	public abstract int insertOrUpdate(Object value) throws DBException;
-
 	/**
 	 * 关闭连接
 	 */
