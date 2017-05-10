@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 数据库表生成po对象
+ * Mysql数据库表生成po对象
  * 
  * @author cf
  * 
@@ -29,16 +29,25 @@ public class GenertorMysql {
 	private static String pass = "chenfan";
 	private static String targetPackage = "com.entity.base";
 	private static String targetProjectSrc = "E:\\Workspaces\\Eclipse\\afan.ducrm.api\\src\\main\\java";
+	private static Set<String> includeTable = null;
 
 	public static void main(String[] args) {
 		connUrl = "jdbc:mysql://localhost:3306/funds";
 		targetPackage = "com.funds";
 		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
-		Set<String> include = new HashSet<String>();
-		include.add("jijinjingzhifenxi");
+		includeTable = new HashSet<String>();
+		includeTable.add("jijinjingzhifenxi");
 		//include.add("jijinxinxi");
 		//include.add("jijinliebiao");
-		connTables(include);
+		create(connUrl, targetPackage, targetProjectSrc, includeTable);
+	}
+	
+	public static void create(String conn, String pakage, String resourceDir, Set<String> include){
+		connUrl = conn;
+		targetPackage = pakage;
+		targetProjectSrc = resourceDir;
+		includeTable = include;
+		connTables(includeTable);
 	}
 
 	public static void connTables(Set<String> include) {
