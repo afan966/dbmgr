@@ -21,20 +21,20 @@ import com.afan.dbmgr.pool.wrap.StatementWrapper;
  * 1.使用标准的SqlTable对象自动添加sql参数
  * 2.使用标准的SqlTable对象自动组装、返回对象，对象list
  */
-public class WrapperDBConnMgr extends DefaultDBConnMgr implements AfanDBConnect {
-	private static final Logger logger = LoggerFactory.getLogger(WrapperDBConnMgr.class);
+public class AfanDBConnMgr extends DefaultDBConnMgr implements AfanDBConnect {
+	private static final Logger logger = LoggerFactory.getLogger(AfanDBConnMgr.class);
 
 	private StatementWrapper ptmtw;//包装PreparedStatement
 
-	public WrapperDBConnMgr() {
+	public AfanDBConnMgr() {
 		this(null, true, true);
 	}
 	
-	public WrapperDBConnMgr(String dbName) {
+	public AfanDBConnMgr(String dbName) {
 		this(dbName, true, true);
 	}
 
-	public WrapperDBConnMgr(String dbName, boolean autoCommit, boolean autoClose) {
+	public AfanDBConnMgr(String dbName, boolean autoCommit, boolean autoClose) {
 		super(dbName, autoCommit, autoClose);
 	}
 

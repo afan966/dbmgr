@@ -31,11 +31,13 @@ public class GenertorMysql {
 	private static String targetProjectSrc = "E:\\Workspaces\\Eclipse\\afan.ducrm.api\\src\\main\\java";
 
 	public static void main(String[] args) {
-		connUrl = "jdbc:mysql://localhost:3306/tbk";
-		targetPackage = "com.tbk";
+		connUrl = "jdbc:mysql://localhost:3306/funds";
+		targetPackage = "com.funds";
 		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
 		Set<String> include = new HashSet<String>();
-		include.add("wdoya_item_info");
+		include.add("jijinjingzhifenxi");
+		//include.add("jijinxinxi");
+		//include.add("jijinliebiao");
 		connTables(include);
 	}
 
@@ -162,19 +164,23 @@ public class GenertorMysql {
 				for (String[] s : tables.get(dt)) {
 					// -5 long 12 String 4 int 8 double -6 int
 					String type = "long";
-					if (Types.BIGINT == Integer.parseInt(s[1])) {
+					int typeCode = Integer.parseInt(s[1]);
+					if (Types.BIGINT == typeCode) {
 						type = "long";
-					} else if (Types.VARCHAR == Integer.parseInt(s[1])) {
+					} else if (Types.VARCHAR == typeCode 
+							|| Types.CHAR == typeCode
+							|| Types.LONGVARCHAR == typeCode) {
 						type = "String";
-					} else if (Types.INTEGER == Integer.parseInt(s[1])) {
+					} else if (Types.INTEGER == typeCode 
+							|| Types.TINYINT == typeCode) {
 						type = "int";
-					} else if (Types.DOUBLE == Integer.parseInt(s[1])) {
+					} else if (Types.DOUBLE == typeCode) {
 						type = "double";
-					} else if (Types.TINYINT == Integer.parseInt(s[1])) {
-						type = "int";
-					} else if (Types.BIT == Integer.parseInt(s[1])) {
+					} else if (Types.BIT == typeCode) {
 						type = "boolean";
-					} else if (Types.DATE == Integer.parseInt(s[1]) || Types.TIME == Integer.parseInt(s[1]) || Types.TIMESTAMP == Integer.parseInt(s[1])) {
+					} else if (Types.DATE == typeCode 
+							|| Types.TIME == typeCode
+							|| Types.TIMESTAMP == typeCode) {
 						type = "Date";
 						useDate = true;
 					} else {
@@ -186,7 +192,7 @@ public class GenertorMysql {
 					if (s[2] != null && s[2].length() > 0)
 						remark = "//" + s[2];
 					boolean autoIncr = "YES".equals(s[3]);
-
+					
 					if (autoIncr) {
 						if (col.equals(colnum)) {
 							body.append("\t" + "@DBColumn(autoIncrement=true)\r\n");
@@ -194,10 +200,22 @@ public class GenertorMysql {
 							body.append("\t" + "@DBColumn(column=\"" + colnum + "\",autoIncrement=true)\r\n");
 						}
 					} else {
+						String handler = "";
+						if("Date".equals(type)){
+							handler = "handler=\"date\"";
+						}
 						if (col.equals(colnum)) {
-							body.append("\t" + "@DBColumn\r\n");
+							if(handler.length()>0){
+								body.append("\t" + "@DBColumn("+handler+")\r\n");
+							}else{
+								body.append("\t" + "@DBColumn\r\n");
+							}
 						} else {
-							body.append("\t" + "@DBColumn(column=\"" + colnum + "\")\r\n");
+							if(handler.length()>0){
+								body.append("\t" + "@DBColumn(column=\"" + colnum + "\" "+handler+")\r\n");
+							}else{
+								body.append("\t" + "@DBColumn(column=\"" + colnum + "\")\r\n");
+							}
 						}
 					}
 					body.append("\t" + "private " + type + " " + col + ";" + remark + "\r\n");
