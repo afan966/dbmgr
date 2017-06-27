@@ -316,5 +316,5 @@ public class SQLUtil {
 	public static String selectByPrimaryKeys(Class<?> clazz) throws DBException {
 		return selectByPrimaryKeys(clazz, null, null);
 	}
-
+	
 }

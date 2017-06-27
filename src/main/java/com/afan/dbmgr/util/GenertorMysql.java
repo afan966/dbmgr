@@ -32,13 +32,19 @@ public class GenertorMysql {
 	private static Set<String> includeTable = null;
 
 	public static void main(String[] args) {
-		connUrl = "jdbc:mysql://localhost:3306/funds";
-		targetPackage = "com.funds";
+//		connUrl = "jdbc:mysql://localhost:3306/best_cust";
+//		targetPackage = "com.baishi";
+//		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
+//		includeTable = new HashSet<String>();
+//		includeTable.add("customer");
+//		//include.add("jijinxinxi");
+//		//include.add("jijinliebiao");
+		
+		connUrl = "jdbc:mysql://localhost:3306/tbk";
+		targetPackage = "com.tbk";
 		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
 		includeTable = new HashSet<String>();
-		includeTable.add("jijinjingzhifenxi");
-		//include.add("jijinxinxi");
-		//include.add("jijinliebiao");
+		includeTable.add("wx_wdoya_item_info");
 		create(connUrl, targetPackage, targetProjectSrc, includeTable);
 	}
 	

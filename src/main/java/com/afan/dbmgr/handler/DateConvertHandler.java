@@ -11,6 +11,11 @@ import com.afan.dbmgr.config.DBErrCode;
 import com.afan.dbmgr.config.SQLColumn;
 import com.afan.dbmgr.handler.ConvertHandler;
 
+/**
+ * 日期类型转换器（sql.Data 和 util.Data 互相转换）
+ * @author afan
+ *
+ */
 @DBHandler(alia = "date")
 public class DateConvertHandler implements ConvertHandler {
 

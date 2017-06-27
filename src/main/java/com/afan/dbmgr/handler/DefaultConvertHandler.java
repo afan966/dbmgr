@@ -8,6 +8,11 @@ import com.afan.dbmgr.DBHandler;
 import com.afan.dbmgr.config.DBErrCode;
 import com.afan.dbmgr.config.SQLColumn;
 
+/**
+ * 默认的数据类型转换器
+ * @author afan
+ *
+ */
 @DBHandler
 public class DefaultConvertHandler implements ConvertHandler {
 

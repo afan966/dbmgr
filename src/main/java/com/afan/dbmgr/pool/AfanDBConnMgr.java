@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import com.afan.dbmgr.config.DBMgrCache;
 import com.afan.dbmgr.config.SQLTable;
 import com.afan.dbmgr.config.TableSchema;
 import com.afan.dbmgr.pool.wrap.StatementWrapper;
+import com.afan.dbmgr.util.SQLUtil;
 
 /**
  * 数据库链接管理封装实现
@@ -86,6 +88,10 @@ public class AfanDBConnMgr extends DefaultDBConnMgr implements AfanDBConnect {
 	public void addBatch(Object... values) throws DBException {
 		for (Object param : values) {
 			if (param instanceof ArrayList) {
+				List<?> ps = (ArrayList<?>)param;
+				if(ps == null || ps.size() ==0){
+					throw new DBException(DBErrCode.ERR_BATCH_PARAM_NULL, "batch param is null");
+				}
 				for (Object p : (ArrayList<?>)param) {
 					setStandardParam(p);
 					this.ptmtw.addBatch();
@@ -131,7 +137,14 @@ public class AfanDBConnMgr extends DefaultDBConnMgr implements AfanDBConnect {
 	
 	@Override
 	public int insertOrUpdate(Object value) throws DBException {
-		return super.insertOrUpdate(value);
+		Object[] sqlParams = SQLUtil.insertOrUpdate(value, null, null);
+		if (sqlParams != null && sqlParams.length == 2) {
+			String sql = sqlParams[0].toString();
+			Object[] values = ((List<?>) sqlParams[1]).toArray();
+			this.prepareStatement(sql, values);
+			return super.executeUpdate();
+		}
+		return 0;
 	}
 	
 	@Override
@@ -159,6 +172,30 @@ public class AfanDBConnMgr extends DefaultDBConnMgr implements AfanDBConnect {
 			logger.error("STable setParam error:"+param.getClass().getName(), e);
 			throw new DBException(DBErrCode.ERR_WMGR_PARAM, e.getMessage(), e);
 		}
+	}
+
+	@Override
+	public int[] insertBatch(List<?> values) throws DBException {
+		String sql = DBMgrCache.getStandardSql(values.get(0), DBMgrCache.INSERT);
+		this.prepareStatement(sql);
+		this.addBatch(values);
+		return this.executeBatch();
+	}
+
+	@Override
+	public int[] updateBatch(List<?> values) throws DBException {
+		String sql = DBMgrCache.getStandardSql(values.get(0), DBMgrCache.UPDATE);
+		this.prepareStatement(sql);
+		this.addBatch(values);
+		return this.executeBatch();
+	}
+
+	@Override
+	public int[] deleteBatch(List<?> values) throws DBException {
+		String sql = DBMgrCache.getStandardSql(values.get(0), DBMgrCache.DELETE);
+		this.prepareStatement(sql);
+		this.addBatch(values);
+		return this.executeBatch();
 	}
 
 }

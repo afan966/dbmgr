@@ -53,6 +53,7 @@ public interface DBErrCode {
 	int ERR_WMGR_EXISTQUERY = 644;
 	int ERR_WMGR_PARAM = 645;
 	int ERR_WMGR_SET_PARAM = 646;
+	int ERR_BATCH_PARAM_NULL = 647;
 	
 	//wrapperStatemet
 	int ERR_WSTAT_PARSE_SQL = 650;

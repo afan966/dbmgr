@@ -146,7 +146,10 @@ public class ResultSetWrapper<T> {
 			logger.error("field:" + sqlColumn.getFieldName() + " can not find handler : [" + sqlColumn.getHandler() + "]");
 			throw new DBException(DBErrCode.ERR_WRESULT_SET, "field:" + sqlColumn.getFieldName() + " can not find handler : [" + sqlColumn.getHandler() + "]");
 		}
-		return handler.convertResultSet(rs, sqlColumn);
+		if(sqlColumn.getJdbcJavaType()!=null){
+			return handler.convertResultSet(rs, sqlColumn);
+		}
+		return null;
 	}
 
 	public int getRecod() {

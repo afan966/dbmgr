@@ -3,6 +3,8 @@ package com.afan.dbmgr.pool;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
+
 import com.afan.dbmgr.DBException;
 
 /**
@@ -153,6 +155,13 @@ public interface AfanDBConnect extends AutoCloseable {
 	 * @throws DBException
 	 */
 	public abstract int delete(Object value) throws DBException;
+	
+	
+	public abstract int[] insertBatch(List<?> values) throws DBException;
+
+	public abstract int[] updateBatch(List<?> values) throws DBException;
+
+	public abstract int[] deleteBatch(List<?> values) throws DBException;
 	
 	/**
 	 * 查询是否存在
