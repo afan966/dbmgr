@@ -40,11 +40,25 @@ public class GenertorMysql {
 //		//include.add("jijinxinxi");
 //		//include.add("jijinliebiao");
 		
-		connUrl = "jdbc:mysql://localhost:3306/tbk";
-		targetPackage = "com.tbk";
+//		connUrl = "jdbc:mysql://localhost:3306/tbk";
+//		targetPackage = "com.tbk";
+//		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
+//		includeTable = new HashSet<String>();
+//		includeTable.add("wx_wdoya_item_info");
+//		create(connUrl, targetPackage, targetProjectSrc, includeTable);
+		
+//		connUrl = "jdbc:mysql://localhost:3306/account";
+//		targetPackage = "test.db.entity";
+//		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\afan.dbmgr\\src\\test\\java";
+//		includeTable = new HashSet<String>();
+//		includeTable.add("seller");
+//		create(connUrl, targetPackage, targetProjectSrc, includeTable);
+		
+		connUrl = "jdbc:mysql://localhost:3306/province_31";
+		targetPackage = "com.buyer.province";
 		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
 		includeTable = new HashSet<String>();
-		includeTable.add("wx_wdoya_item_info");
+		includeTable.add("buyer_stat310101");
 		create(connUrl, targetPackage, targetProjectSrc, includeTable);
 	}
 	

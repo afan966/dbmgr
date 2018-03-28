@@ -81,4 +81,7 @@ public interface DBErrCode {
 	int ERR_SQL_SELECT = 673;
 	int ERR_SQL_NOPRIMARY = 674;
 	
+	int ERR_SYNTAX_ERROR = 700;
+	int ERR_COLUMN_NON_EXIST = 701;
+	
 }

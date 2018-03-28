@@ -1,5 +1,6 @@
 package com.afan.dbmgr.pool.wrap;
 
+import java.io.Closeable;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -7,29 +8,28 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.afan.dbmgr.DBException;
 import com.afan.dbmgr.config.DBErrCode;
 import com.afan.dbmgr.config.SQLColumn;
 import com.afan.dbmgr.config.SQLTable;
 import com.afan.dbmgr.config.TableSchema;
 import com.afan.dbmgr.handler.ConvertHandler;
-import com.afan.dbmgr.pool.AfanDBConnect;
+import com.afan.dbmgr.pool.AfanConnect;
 import com.afan.dbmgr.pool.DBConnect;
+import com.afan.dbmgr.pool.DefaultConnect;
 import com.afan.dbmgr.pool.druid.DruidMgr;
 
 /**
  * @author cf
  * @Description: 包装的resultset 根据标准的stable自动组装查询的结果
  */
-public class ResultSetWrapper<T> {
+public class ResultSetWrapper<T> implements Closeable {
 	private static final Logger logger = LoggerFactory.getLogger(StatementWrapper.class);
 	
 	DBConnect conn = null;
-	AfanDBConnect afaconn = null;
+	AfanConnect afaconn = null;
 	// 结果集
 	private ResultSet rs;
 	// 表结果对象
@@ -44,15 +44,15 @@ public class ResultSetWrapper<T> {
 	private AtomicInteger recod = new AtomicInteger();
 
 	public ResultSetWrapper(DBConnect conn, Class<T> clazz) throws DBException {
-		this.conn = conn;
-		this.rs = conn.executeQuery();
-		init(rs, clazz);
-	}
-
-	public ResultSetWrapper(AfanDBConnect afaconn, Class<T> clazz) throws DBException {
-		this.afaconn = afaconn;
-		this.rs = afaconn.executeQuery();
-		init(rs, clazz);
+		if (conn instanceof AfanConnect) {
+			this.afaconn = (AfanConnect) conn;
+			this.rs = this.afaconn.executeQuery();
+			init(this.rs, clazz);
+		} else if (conn instanceof DefaultConnect) {
+			this.conn = (DefaultConnect) conn;
+			this.rs = this.conn.executeQuery();
+			init(this.rs, clazz);
+		}
 	}
 
 	private void init(ResultSet rs, Class<T> clazz) throws DBException {

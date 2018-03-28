@@ -43,7 +43,7 @@ public class DruidMgr {
 	int maxActive = 10;// 最大
 
 	// 慢sql统计
-	int slowSqlMillis = 10 * 1000;
+	int slowSqlMillis = 3 * 1000;
 	boolean logSlowSql = true;
 
 	// 获取连接等待超时的时间

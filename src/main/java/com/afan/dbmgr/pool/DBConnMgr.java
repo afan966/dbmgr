@@ -14,9 +14,9 @@ import com.afan.dbmgr.pool.druid.DruidMgr;
 import com.afan.dbmgr.util.StringUtil;
 
 /**
- * 数据库链接管理
- * @author cf
- * 
+ * 数据库链接管理基类
+ * @author afan
+ *
  */
 public abstract class DBConnMgr {
 	private static final Logger logger = LoggerFactory.getLogger(DBConnMgr.class);
