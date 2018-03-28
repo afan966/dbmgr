@@ -1,47 +1,48 @@
 package test.db;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import test.db.entity.Seller;
 import com.afan.dbmgr.DBException;
+import com.afan.dbmgr.pool.AfanConnect;
 import com.afan.dbmgr.pool.DBConnect;
-import com.afan.dbmgr.pool.DefaultDBConnMgr;
 import com.afan.dbmgr.pool.druid.DruidMgr;
+import com.afan.dbmgr.pool.wrap.ResultSetWrapper;
 import com.afan.dbmgr.util.LogBackConfigLoader;
 
 public class DatabaseTest {
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseTest.class);
 
 	public static void main(String[] args) {
-		LogBackConfigLoader.load("E:\\Workspaces\\MyEclipse11\\dbmgr\\src\\main\\resources\\logback.xml");
+		LogBackConfigLoader.load("E:\\Workspaces\\MyEclipse11\\afan.dbmgr\\src\\main\\resources\\logback.xml");
+		DruidMgr.getInstance().init("E:\\Workspaces\\MyEclipse11\\afan.dbmgr\\src\\main\\resources\\druid.properties");
 		
-		DruidMgr.getInstance().init("E:\\Workspaces\\MyEclipse11\\dbmgr\\src\\main\\resources\\druid.properties");
-//		try (DBConnMgr conn = new DefaultDBConnMgr()) {
-//			conn.prepareStatement("select * from user_account_consume where userId=?", userId);
-//			return new ResultSetWrapper<UserAccountConsume>(conn, UserAccountConsume.class).queryList();
-//		}
-		int i=0;
-		DBConnect conn = new DefaultDBConnMgr();
-		try {
-			PreparedStatement ptmt = conn.prepareStatement("select count(1) from seller where shopType = 'B' and shopLevel = ?", 8);
-			
-			//ResultSetWrapper<T> rs = new ResultSetWrapper<>(conn, clazz);
-			ResultSet rs = ptmt.executeQuery();
-			while(rs.next()){
-				System.out.println(rs.getString(1));
-				logger.debug("debug >>> {}", rs.getInt(1));
+		Seller seller = new Seller();
+		seller.setSellerId(601134157);
+		seller.setSellerNick("学生不懂1");
+		seller.setName("haha");
+		
+		long t1 = System.currentTimeMillis();
+		for (int i=0;i<10000;i++) {
+			try (DBConnect con = new AfanConnect()) {
+				seller.setSellerId(601134188+i);
+				con.insert(seller);
+			} catch (DBException e) {
+				e.printStackTrace();
 			}
-			//conn.executeQuery("select * from seller where sellerId=60113414");
-			try{
-			System.out.println(10/i);
-			}catch(Exception e){
-				logger.error("hahahah - ", e);
-			}	
-		} catch (DBException | SQLException e) {
+		}
+		System.out.println("total used:"+(System.currentTimeMillis()-t1));
+		
+		try (DBConnect con = new AfanConnect()) {
+			con.query(seller);
+			ResultSetWrapper<Seller> rs = new ResultSetWrapper<>(con, Seller.class);
+			for (Seller s : rs.queryList()) {
+				logger.debug(s.getSellerId()+" - "+s.getSellerNick());
+			}
+		} catch (DBException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 }
