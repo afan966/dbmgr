@@ -6,7 +6,7 @@ public class About {
 	/**
 	 * 基于proxool数据库连接池JDBC管理器（废弃，不建议使用）
 	 * 基于druid数据库连接池JDBC管理器
-	 * 基于jsqlparsersql自动处理
+	 * 基于jsqlparsersql自动处理（废弃，不建议使用）
 	 */
 
 	/**

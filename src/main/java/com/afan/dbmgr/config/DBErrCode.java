@@ -53,6 +53,7 @@ public interface DBErrCode {
 	int ERR_WMGR_EXISTQUERY = 644;
 	int ERR_WMGR_PARAM = 645;
 	int ERR_WMGR_SET_PARAM = 646;
+	int ERR_BATCH_PARAM_NULL = 647;
 	
 	//wrapperStatemet
 	int ERR_WSTAT_PARSE_SQL = 650;
@@ -79,5 +80,8 @@ public interface DBErrCode {
 	int ERR_SQL_DELETE = 672;
 	int ERR_SQL_SELECT = 673;
 	int ERR_SQL_NOPRIMARY = 674;
+	
+	int ERR_SYNTAX_ERROR = 700;
+	int ERR_COLUMN_NON_EXIST = 701;
 	
 }

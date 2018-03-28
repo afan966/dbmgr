@@ -3,6 +3,8 @@ package com.afan.dbmgr.pool;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
+
 import com.afan.dbmgr.DBException;
 
 /**
@@ -12,6 +14,12 @@ import com.afan.dbmgr.DBException;
  */
 public interface DBConnect extends AutoCloseable {
 
+	/**
+	 * 基础参数赋值
+	 * @param i
+	 * @param value
+	 * @throws DBException
+	 */
 	public void setInt(int i, Integer value) throws DBException;
 
 	public void setLong(int i, Long value) throws DBException;
@@ -42,6 +50,15 @@ public interface DBConnect extends AutoCloseable {
 	 * @throws DBException
 	 */
 	public abstract PreparedStatement prepareStatement(String sql, Object... values) throws DBException;
+	
+	/**
+	 * 预编译sql，指定参数对象
+	 * @param sql
+	 * @param param
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract PreparedStatement prepareStatement(String sql, Object param) throws DBException;
 
 	/**
 	 * 执行call的参数，存储过程等方法
@@ -113,6 +130,14 @@ public interface DBConnect extends AutoCloseable {
 	public abstract int[] executeBatch() throws DBException;
 	
 	/**
+	 * 执行批量sql
+	 * 
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract int[] executeBatch(Object param) throws DBException;
+	
+	/**
 	 * 查询是否存在
 	 * 
 	 * @return
@@ -144,7 +169,71 @@ public interface DBConnect extends AutoCloseable {
 	 * @throws DBException
 	 */
 	public abstract int insertOrUpdate(Object value) throws DBException;
+	
+	/**
+	 * 插入并返回上次的自增id MYSQL的LAST_INSERT_ID() 根据标准（@DBTable）
+	 * @param value
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract long insertReturnAutoId(Object value) throws DBException;
 
+	/**
+	 * 插入 根据标准（@DBTable）
+	 * @param value
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract int insert(Object value) throws DBException;
+
+	/**
+	 * 修改 根据标准（@DBTable）
+	 * @param value
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract int update(Object value) throws DBException;
+	
+	/**
+	 * 删除 根据标准（@DBTable）
+	 * @param value
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract int delete(Object value) throws DBException;
+	
+	/**
+	 * 查询 根据标准（@DBTable）
+	 * @param value
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract void query(Object value) throws DBException;
+	
+	/**
+	 * 批量插入 根据标准（@DBTable）
+	 * @param value
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract int[] insertBatch(List<?> values) throws DBException;
+
+	/**
+	 * 批量修改 根据标准（@DBTable）
+	 * @param value
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract int[] updateBatch(List<?> values) throws DBException;
+	
+	/**
+	 * 批量删除 根据标准（@DBTable）
+	 * @param value
+	 * @return
+	 * @throws DBException
+	 */
+	public abstract int[] deleteBatch(List<?> values) throws DBException;
+	
 	/**
 	 * 关闭连接
 	 */

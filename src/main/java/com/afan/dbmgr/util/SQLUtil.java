@@ -3,7 +3,6 @@ package com.afan.dbmgr.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import com.afan.dbmgr.DBException;
 import com.afan.dbmgr.config.DBErrCode;
 import com.afan.dbmgr.config.SQLColumn;
@@ -316,5 +315,5 @@ public class SQLUtil {
 	public static String selectByPrimaryKeys(Class<?> clazz) throws DBException {
 		return selectByPrimaryKeys(clazz, null, null);
 	}
-
+	
 }

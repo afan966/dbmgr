@@ -7,7 +7,7 @@ import com.afan.dbmgr.util.SQLUtil;
 import com.afan.dbmgr.util.StringUtil;
 
 /**
- * 缓存
+ * 缓存sql
  * 
  * @author cf
  * 

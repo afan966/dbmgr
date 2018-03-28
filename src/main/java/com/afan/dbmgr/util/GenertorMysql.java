@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 数据库表生成po对象
+ * Mysql数据库表生成po对象
  * 
  * @author cf
  * 
@@ -29,14 +29,45 @@ public class GenertorMysql {
 	private static String pass = "chenfan";
 	private static String targetPackage = "com.entity.base";
 	private static String targetProjectSrc = "E:\\Workspaces\\Eclipse\\afan.ducrm.api\\src\\main\\java";
+	private static Set<String> includeTable = null;
 
 	public static void main(String[] args) {
-		connUrl = "jdbc:mysql://localhost:3306/tbk";
-		targetPackage = "com.tbk";
+//		connUrl = "jdbc:mysql://localhost:3306/best_cust";
+//		targetPackage = "com.baishi";
+//		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
+//		includeTable = new HashSet<String>();
+//		includeTable.add("customer");
+//		//include.add("jijinxinxi");
+//		//include.add("jijinliebiao");
+		
+//		connUrl = "jdbc:mysql://localhost:3306/tbk";
+//		targetPackage = "com.tbk";
+//		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
+//		includeTable = new HashSet<String>();
+//		includeTable.add("wx_wdoya_item_info");
+//		create(connUrl, targetPackage, targetProjectSrc, includeTable);
+		
+//		connUrl = "jdbc:mysql://localhost:3306/account";
+//		targetPackage = "test.db.entity";
+//		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\afan.dbmgr\\src\\test\\java";
+//		includeTable = new HashSet<String>();
+//		includeTable.add("seller");
+//		create(connUrl, targetPackage, targetProjectSrc, includeTable);
+		
+		connUrl = "jdbc:mysql://localhost:3306/province_31";
+		targetPackage = "com.buyer.province";
 		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
-		Set<String> include = new HashSet<String>();
-		include.add("wdoya_item_info");
-		connTables(include);
+		includeTable = new HashSet<String>();
+		includeTable.add("buyer_stat310101");
+		create(connUrl, targetPackage, targetProjectSrc, includeTable);
+	}
+	
+	public static void create(String conn, String pakage, String resourceDir, Set<String> include){
+		connUrl = conn;
+		targetPackage = pakage;
+		targetProjectSrc = resourceDir;
+		includeTable = include;
+		connTables(includeTable);
 	}
 
 	public static void connTables(Set<String> include) {
@@ -162,19 +193,23 @@ public class GenertorMysql {
 				for (String[] s : tables.get(dt)) {
 					// -5 long 12 String 4 int 8 double -6 int
 					String type = "long";
-					if (Types.BIGINT == Integer.parseInt(s[1])) {
+					int typeCode = Integer.parseInt(s[1]);
+					if (Types.BIGINT == typeCode) {
 						type = "long";
-					} else if (Types.VARCHAR == Integer.parseInt(s[1])) {
+					} else if (Types.VARCHAR == typeCode 
+							|| Types.CHAR == typeCode
+							|| Types.LONGVARCHAR == typeCode) {
 						type = "String";
-					} else if (Types.INTEGER == Integer.parseInt(s[1])) {
+					} else if (Types.INTEGER == typeCode 
+							|| Types.TINYINT == typeCode) {
 						type = "int";
-					} else if (Types.DOUBLE == Integer.parseInt(s[1])) {
+					} else if (Types.DOUBLE == typeCode) {
 						type = "double";
-					} else if (Types.TINYINT == Integer.parseInt(s[1])) {
-						type = "int";
-					} else if (Types.BIT == Integer.parseInt(s[1])) {
+					} else if (Types.BIT == typeCode) {
 						type = "boolean";
-					} else if (Types.DATE == Integer.parseInt(s[1]) || Types.TIME == Integer.parseInt(s[1]) || Types.TIMESTAMP == Integer.parseInt(s[1])) {
+					} else if (Types.DATE == typeCode 
+							|| Types.TIME == typeCode
+							|| Types.TIMESTAMP == typeCode) {
 						type = "Date";
 						useDate = true;
 					} else {
@@ -186,7 +221,7 @@ public class GenertorMysql {
 					if (s[2] != null && s[2].length() > 0)
 						remark = "//" + s[2];
 					boolean autoIncr = "YES".equals(s[3]);
-
+					
 					if (autoIncr) {
 						if (col.equals(colnum)) {
 							body.append("\t" + "@DBColumn(autoIncrement=true)\r\n");
@@ -194,10 +229,22 @@ public class GenertorMysql {
 							body.append("\t" + "@DBColumn(column=\"" + colnum + "\",autoIncrement=true)\r\n");
 						}
 					} else {
+						String handler = "";
+						if("Date".equals(type)){
+							handler = "handler=\"date\"";
+						}
 						if (col.equals(colnum)) {
-							body.append("\t" + "@DBColumn\r\n");
+							if(handler.length()>0){
+								body.append("\t" + "@DBColumn("+handler+")\r\n");
+							}else{
+								body.append("\t" + "@DBColumn\r\n");
+							}
 						} else {
-							body.append("\t" + "@DBColumn(column=\"" + colnum + "\")\r\n");
+							if(handler.length()>0){
+								body.append("\t" + "@DBColumn(column=\"" + colnum + "\" "+handler+")\r\n");
+							}else{
+								body.append("\t" + "@DBColumn(column=\"" + colnum + "\")\r\n");
+							}
 						}
 					}
 					body.append("\t" + "private " + type + " " + col + ";" + remark + "\r\n");
