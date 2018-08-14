@@ -18,7 +18,7 @@ import com.afan.dbmgr.config.TableSchema;
 import com.afan.dbmgr.pool.wrap.StatementWrapper;
 
 /**
- * 数据库链接管理封装实先
+ * 数据库链接管理封装实现
  * @author afan
  * @Description: 使用包装的 connect,preporetment,result 
  * 1.使用标准的SqlTable对象自动添加sql参数

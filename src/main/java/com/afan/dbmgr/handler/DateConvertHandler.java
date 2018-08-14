@@ -22,13 +22,14 @@ public class DateConvertHandler implements ConvertHandler {
 	@Override
 	public void convertPreparedStatement(PreparedStatement ptmt, int i, SQLColumn sqlColumn) throws DBException {
 		try {
-			if (sqlColumn.getValue() instanceof java.util.Date) {
+			if (sqlColumn.getValue() == null) {
+				ptmt.setTimestamp(i, null);
+			} else if (sqlColumn.getValue() instanceof java.util.Date) {
 				java.util.Date date = (java.util.Date) sqlColumn.getValue();
 				ptmt.setTimestamp(i, new Timestamp(date.getTime()));
 			} else {
 				throw new DBException(DBErrCode.ERR_WSTAT_SET_PARAM, "field:" + sqlColumn.getFieldName() + " can not convert to java.util.Date");
 			}
-
 		} catch (SQLException e) {
 			throw new DBException(DBErrCode.ERR_WSTAT_SET_PARAM, e.getMessage(), e);
 		}

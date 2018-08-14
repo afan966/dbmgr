@@ -205,7 +205,7 @@ public class SQLUtil {
 	 * @return sql,参数集合
 	 * @throws DBException
 	 */
-	public static Object[] insertOrUpdate(Object value, String tableName, String columnNames) throws DBException {
+	public static SqlObject insertOrUpdate(Object value, String tableName, String columnNames) throws DBException {
 		SQLTable sqlTable = TableSchema.schema().getSqlTableParam(value);
 		if (sqlTable == null) {
 			throw new DBException(DBErrCode.ERR_SQL_UPDATE, "create update sql error");
@@ -263,10 +263,10 @@ public class SQLUtil {
 		if (update.length() > 0) {
 			sql.append(SPACE).append(ONDUPLICATE).append(SPACE).append(update);
 		}
-		return new Object[] { sql, params };
+		return new SqlObject(sql.toString(), params);
 	}
 
-	public static Object[] insertOrUpdate(Object value) throws DBException {
+	public static SqlObject insertOrUpdate(Object value) throws DBException {
 		return insertOrUpdate(value, null, null);
 	}
 
@@ -315,5 +315,4 @@ public class SQLUtil {
 	public static String selectByPrimaryKeys(Class<?> clazz) throws DBException {
 		return selectByPrimaryKeys(clazz, null, null);
 	}
-	
 }

@@ -54,12 +54,12 @@ public class GenertorMysql {
 //		includeTable.add("seller");
 //		create(connUrl, targetPackage, targetProjectSrc, includeTable);
 		
-		connUrl = "jdbc:mysql://localhost:3306/province_31";
-		targetPackage = "com.buyer.province";
-		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\tbk\\src\\main\\java";
+		connUrl = "jdbc:mysql://192.168.81.130:3306/afan_config";
+		targetPackage = "com.afan.conf.enity";
+		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\afan.conf\\src\\main\\java\\";
 		includeTable = new HashSet<String>();
 		includeTable.add("buyer_stat310101");
-		create(connUrl, targetPackage, targetProjectSrc, includeTable);
+		create(connUrl, targetPackage, targetProjectSrc, null);
 	}
 	
 	public static void create(String conn, String pakage, String resourceDir, Set<String> include){

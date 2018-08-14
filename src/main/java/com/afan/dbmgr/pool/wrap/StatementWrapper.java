@@ -236,6 +236,7 @@ public class StatementWrapper {
 			handler.convertPreparedStatement(this.ptmt, i, sqlColumn);
 			params[i - 1] = sqlColumn.getValue();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new DBException(DBErrCode.ERR_SET_PARAM, "setParam error:" + sqlColumn.toString(), sql, e);
 		}
 	}

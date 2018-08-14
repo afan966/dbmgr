@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.List;
 
 import com.afan.dbmgr.DBException;
+import com.afan.dbmgr.util.SqlObject;
 
 /**
  * 简单JDBC连接接口
@@ -40,6 +41,8 @@ public interface DBConnect extends AutoCloseable {
 	 * @throws DBException
 	 */
 	public abstract PreparedStatement prepareStatement(String sql) throws DBException;
+	
+	public abstract PreparedStatement prepareStatement(SqlObject sqlObject) throws DBException;
 
 	/**
 	 * 预编译sql，指定参数集

@@ -90,6 +90,15 @@ public class DruidMgr {
 		}
 		return instance;
 	}
+	
+	public void init() {
+		//启动参数-Dafan.druid.config.location=c:\\druid.properties
+		String config = System.getProperty("afan.druid.config.location");
+		if(StringUtil.isBlank(config)||!new File(config).exists()){
+			config = DruidMgr.class.getResource("/").getPath() + "druid.properties";
+		}
+		init(config);
+	}
 
 	@SuppressWarnings("unchecked")
 	public void init(String config) {
@@ -99,6 +108,7 @@ public class DruidMgr {
 				logger.error("can not find druid config : {}", config);
 				return;
 			}
+			logger.debug("load afan.druid.config.location--->>>>:{}",config);
 			prop.load(new FileInputStream(config));
 			init(prop);
 			// 初始化handler

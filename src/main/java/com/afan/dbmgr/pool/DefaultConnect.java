@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.afan.dbmgr.DBException;
 import com.afan.dbmgr.config.DBErrCode;
 import com.afan.dbmgr.util.SQLUtil;
+import com.afan.dbmgr.util.SqlObject;
 
 /**
  * JDBC链接实现
@@ -81,6 +82,10 @@ public class DefaultConnect extends DBConnMgr implements DBConnect {
 		}
 		return this.ptmt;
 	}
+	
+	public PreparedStatement prepareStatement(SqlObject sqlObject) throws DBException {
+		return prepareStatement(sqlObject.getSql(), sqlObject.getParamValues());
+	}
 
 	public PreparedStatement prepareStatement(String sql, Object... values) throws DBException {
 		this.sql = sql;
@@ -124,12 +129,15 @@ public class DefaultConnect extends DBConnMgr implements DBConnect {
 	}
 
 	public ResultSet executeQuery() throws DBException {
+		long t1 = System.currentTimeMillis();
 		try {
 			this.rs = ptmt.executeQuery();
 		} catch (SQLException e) {
 			hasError = true;
 			throw new DBException(DBErrCode.ERR_MGR_EXEC_QUERY, "executeQuery", sql, e);
 		}
+		long t2 = System.currentTimeMillis();
+		logger.debug("[{}] - {}", (t2-t1), this.sql);
 		return this.rs;
 	}
 
@@ -255,11 +263,9 @@ public class DefaultConnect extends DBConnMgr implements DBConnect {
 	}
 	
 	public int insertOrUpdate(Object value) throws DBException {
-		Object[] sqlParams = SQLUtil.insertOrUpdate(value, null, null);
-		if (sqlParams != null && sqlParams.length == 2) {
-			String sql = sqlParams[0].toString();
-			Object[] values = ((List<?>) sqlParams[1]).toArray();
-			this.prepareStatement(sql, values);
+		SqlObject sqlObject = SQLUtil.insertOrUpdate(value, null, null);
+		if (sqlObject != null && sqlObject.size()>0) {
+			this.prepareStatement(sqlObject);
 			return this.executeUpdate();
 		}
 		return 0;
