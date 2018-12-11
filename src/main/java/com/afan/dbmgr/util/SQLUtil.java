@@ -22,6 +22,7 @@ public class SQLUtil {
 	private static final String SPOT = ".";
 	private static final String SPLIT = "\\|";
 	private static final String STAR = "*";
+	private static final String QUOT = "'";
 
 	private static final String SELECT = "select";
 	private static final String INSERT = "insert";
@@ -33,6 +34,7 @@ public class SQLUtil {
 	private static final String INTO = "into";
 	private static final String VALUES = "values";
 	private static final String SET = "set";
+	private static final String IN = "in";
 
 	private static final String LEFT_BRACKET = "(";
 	private static final String RIGHT_BRACKET = ")";
@@ -314,5 +316,45 @@ public class SQLUtil {
 
 	public static String selectByPrimaryKeys(Class<?> clazz) throws DBException {
 		return selectByPrimaryKeys(clazz, null, null);
+	}
+	
+	/**
+	 * SQL拼接List in(xxx)
+	 * @param colnum
+	 * @param items
+	 * @param isStr
+	 * @return
+	 */
+	public static String appendListIn(String colnum, List<?> items, boolean isStr){
+		if (StringUtil.isBlank(colnum) || items == null || items.size() == 0) {
+			return null;
+		}
+		if (isStr == items.get(0) instanceof String) {
+			return null;
+		}
+		StringBuilder sql = new StringBuilder();
+		sql.append(colnum);
+		sql.append(SPACE).append(IN).append(SPACE).append(LEFT_BRACKET);
+		for (int i = 0; i < items.size(); i++) {
+			if(i>0){
+				sql.append(COMMA);
+			}
+			if(isStr){
+				sql.append(QUOT);
+				sql.append(sqlValidate((String)items.get(i)));
+				sql.append(QUOT);
+			}else{
+				sql.append(items.get(i));
+			}
+		}
+		sql.append(RIGHT_BRACKET);
+		return sql.toString();
+	}
+	
+	public static String appendArrayIn(String colnum, Object[] items, boolean isStr){
+		if (items == null) {
+			return null;
+		}
+		return appendListIn(colnum, Arrays.asList(items), isStr);
 	}
 }
