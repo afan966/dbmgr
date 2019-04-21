@@ -2,6 +2,8 @@ package com.afan.dbmgr.config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.afan.dbmgr.DBException;
 import com.afan.dbmgr.util.SQLUtil;
 import com.afan.dbmgr.util.StringUtil;
@@ -20,9 +22,8 @@ public class DBMgrCache {
 	public static final int INSERT = 2;
 	public static final int UPDATE = 3;
 	public static final int DELETE = 4;
-	public static final int INSERTORUPDATE = 5;
 
-	private static final Map<String, String> standardSqlCaches = new HashMap<String, String>();
+	private static final Map<String, String> standardSqlCaches = new ConcurrentHashMap<>();
 
 	// 标准sql
 	public static String getStandardSql(Object value, int type) throws DBException {

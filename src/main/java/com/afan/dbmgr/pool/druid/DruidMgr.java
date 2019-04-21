@@ -1,18 +1,5 @@
 package com.afan.dbmgr.pool.druid;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.afan.dbmgr.DBException;
 import com.afan.dbmgr.DBHandler;
 import com.afan.dbmgr.config.DBErrCode;
@@ -26,11 +13,20 @@ import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alibaba.druid.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.*;
 
 public class DruidMgr {
 	private static final Logger logger = LoggerFactory.getLogger(DruidMgr.class);
 
-	private static final Map<String, DruidDataSource> dataSources = new HashMap<String, DruidDataSource>();
+	private static final Map<String, DruidDataSource> dataSources = new HashMap<>();
 
 	String alias;
 	String driverClass;
@@ -73,7 +69,7 @@ public class DruidMgr {
 
 	String defaultAlia = "jdbc";
 
-	private Map<String, ConvertHandler> handlers = new HashMap<String, ConvertHandler>();
+	private Map<String, ConvertHandler> handlers = new HashMap<>();
 
 	private DruidMgr() {
 	}
@@ -132,8 +128,6 @@ public class DruidMgr {
 				}
 			}
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -157,7 +151,7 @@ public class DruidMgr {
 
 			String publicKey = prop.getProperty("jdbc.publicKey");
 
-			List<Filter> proxyFilters = new ArrayList<Filter>();
+			List<Filter> proxyFilters = new ArrayList<>();
 			StatFilter stat = new StatFilter();
 			stat.setSlowSqlMillis(slowSqlMillis);
 			stat.setLogSlowSql(logSlowSql);
@@ -208,7 +202,7 @@ public class DruidMgr {
 			properties.setProperty("poolPreparedStatements", env.getProperty(alia + ".poolPreparedStatements", poolPreparedStatements + ""));
 			properties.setProperty("maxPoolPreparedStatementPerConnectionSize", env.getProperty(alia + ".maxPoolPreparedStatementPerConnectionSize", maxPoolPreparedStatementPerConnectionSize + ""));
 			DruidDataSource dataSource = (DruidDataSource) DruidDataSourceFactory.createDataSource(properties);
-			// filter和proxyFileter是重复的只要一个就好了
+			// filter和proxyFilter是重复的只要一个就好了
 			// dataSource.setFilters(filters);
 			dataSource.setProxyFilters(proxyFilters);
 			dataSources.put(alia, dataSource);
@@ -222,7 +216,7 @@ public class DruidMgr {
 		if (StringUtils.isEmpty(alia)) {
 			alia = defaultAlia;
 		}
-		Connection connection = null;
+		Connection connection;
 		try {
 			connection = dataSources.get(alia).getConnection();
 			if (connection == null) {
@@ -235,7 +229,7 @@ public class DruidMgr {
 		return connection;
 	}
 
-	public ConvertHandler getHhandler(String name) throws DBException {
+	public ConvertHandler getHandler(String name) throws DBException {
 		if (StringUtils.isEmpty(name)) {
 			name = defaultAlia;
 		}

@@ -20,6 +20,7 @@ public class DefaultConvertHandler implements ConvertHandler {
 	public void convertPreparedStatement(PreparedStatement ptmt, int i, SQLColumn sqlColumn) throws DBException {
 		try {
 			JDBCType type = JDBCType.getEnum(sqlColumn.getJavaType());
+			assert type != null;
 			switch (type) {
 			case INT:
 				ptmt.setInt(i, sqlColumn.getInt(0));
@@ -60,6 +61,7 @@ public class DefaultConvertHandler implements ConvertHandler {
 	public Object convertResultSet(ResultSet rs, SQLColumn sqlColumn) throws DBException {
 		try {
 			JDBCType type = JDBCType.getEnumJdbc(sqlColumn.getJdbcJavaType());
+			assert type != null;
 			switch (type) {
 			case INT:
 				return rs.getInt(sqlColumn.getColumnName());

@@ -50,18 +50,18 @@ public class SQLUtil {
 	// 验证注入
 	public static String sqlValidate(String s) {
 		s = s.toLowerCase();// 统一转为小写
-		for (int i = 0; i < injects.length; i++) {
-			if (s.indexOf(injects[i]) >= 0) {
-				s = s.replace(injects[i], SPACE);
+		for (String inject : injects) {
+			if (s.contains(inject)) {
+				s = s.replace(inject, SPACE);
 			}
 		}
 		return s;
 	}
 
 	/**
-	 * 自动组装insertsql
+	 * 自动组装insert sql
 	 * 
-	 * @param value
+	 * @param clazz
 	 * @param tableName
 	 * @return
 	 * @throws DBException
@@ -80,20 +80,19 @@ public class SQLUtil {
 			SQLColumn sqlColumn = sqlTable.getColumnMap().get(column);
 			if (!sqlColumn.isAutoIncrement()) {//自增列不记录参数
 				if (columns.length() > 0) {
-					columns.append(COMMA).append(column);
-					values.append(COMMA).append(QUESTION);
-				} else {
-					columns.append(column);
-					values.append(QUESTION);
+					columns.append(COMMA);
+					values.append(COMMA);
 				}
+				columns.append(column);
+				values.append(QUESTION);
+
 			}
 		}
 
-		StringBuilder sql = new StringBuilder();
-		sql.append(INSERT).append(SPACE).append(INTO).append(SPACE);
-		sql.append(tableName).append(LEFT_BRACKET).append(columns).append(RIGHT_BRACKET).append(SPACE);
-		sql.append(VALUES).append(LEFT_BRACKET).append(values).append(RIGHT_BRACKET);
-		return sql.toString();
+		return new StringBuilder()
+		.append(INSERT).append(SPACE).append(INTO).append(SPACE)
+		.append(tableName).append(LEFT_BRACKET).append(columns).append(RIGHT_BRACKET).append(SPACE)
+		.append(VALUES).append(LEFT_BRACKET).append(values).append(RIGHT_BRACKET).toString();
 	}
 
 	public static String insert(Class<?> clazz) throws DBException {
@@ -103,9 +102,9 @@ public class SQLUtil {
 	/**
 	 * 自动组装updatesql
 	 * 
-	 * @param value
+	 * @param clazz
 	 * @param tableName
-	 * @param columns指定需要修改的列
+	 * @param columnNames 指定需要修改的列
 	 * @return
 	 * @throws DBException
 	 */
@@ -114,7 +113,7 @@ public class SQLUtil {
 		if (sqlTable == null) {
 			throw new DBException(DBErrCode.ERR_SQL_UPDATE, "create update sql error");
 		}
-		if (sqlTable.getParimaryKeys() == null || sqlTable.getParimaryKeys().length == 0) {
+		if (sqlTable.getPrimaryKeys() == null || sqlTable.getPrimaryKeys().length == 0) {
 			throw new DBException(DBErrCode.ERR_SQL_NOPRIMARY, "create update sql without primary key");
 		}
 
@@ -126,7 +125,7 @@ public class SQLUtil {
 		tableName = tableName != null && tableName.length() > 0 ? tableName : sqlTable.getDbName() + SPOT + sqlTable.getTableName();
 
 		StringBuilder where = new StringBuilder();
-		for (String pk : sqlTable.getParimaryKeys()) {
+		for (String pk : sqlTable.getPrimaryKeys()) {
 			if (where.length() > 0) {
 				where.append(SPACE).append(AND).append(SPACE);
 			}
@@ -142,18 +141,15 @@ public class SQLUtil {
 				}
 			}
 			if (!sqlColumn.isPrimaryKey()) {
-				if (update.length() > 0) {
-					update.append(COMMA);
-				}
+				if (update.length() > 0) update.append(COMMA);
 				update.append(column).append(EQUAL).append(QUESTION);
 			}
 		}
 
-		StringBuilder sql = new StringBuilder();
-		sql.append(UPDATE).append(SPACE).append(tableName).append(SPACE);
-		sql.append(SET).append(SPACE).append(update).append(SPACE);
-		sql.append(WHERE).append(SPACE).append(where);
-		return sql.toString();
+		return new StringBuilder()
+		.append(UPDATE).append(SPACE).append(tableName).append(SPACE)
+		.append(SET).append(SPACE).append(update).append(SPACE)
+		.append(WHERE).append(SPACE).append(where).toString();
 	}
 
 	public static String updateByPrimaryKeys(Class<?> clazz) throws DBException {
@@ -163,7 +159,7 @@ public class SQLUtil {
 	/**
 	 * 根据主键删除
 	 * 
-	 * @param value
+	 * @param clazz
 	 * @param tableName
 	 * @return
 	 * @throws DBException
@@ -173,25 +169,24 @@ public class SQLUtil {
 		if (sqlTable == null) {
 			throw new DBException(DBErrCode.ERR_SQL_DELETE, "create update sql error");
 		}
-		if (sqlTable.getParimaryKeys() == null || sqlTable.getParimaryKeys().length == 0) {
+		if (sqlTable.getPrimaryKeys() == null || sqlTable.getPrimaryKeys().length == 0) {
 			throw new DBException(DBErrCode.ERR_SQL_NOPRIMARY, "create update sql without primary key");
 		}
 
 		tableName = tableName != null && tableName.length() > 0 ? tableName : sqlTable.getDbName() + SPOT + sqlTable.getTableName();
 
 		StringBuilder where = new StringBuilder();
-		for (String pk : sqlTable.getParimaryKeys()) {
+		for (String pk : sqlTable.getPrimaryKeys()) {
 			if (where.length() > 0) {
 				where.append(SPACE).append(AND).append(SPACE);
 			}
 			where.append(pk).append(EQUAL).append(QUESTION);
 		}
 
-		StringBuilder sql = new StringBuilder();
-		sql.append(DELETE).append(SPACE).append(FROM).append(SPACE);
-		sql.append(tableName).append(SPACE);
-		sql.append(WHERE).append(SPACE).append(where);
-		return sql.toString();
+		return new StringBuilder()
+		.append(DELETE).append(SPACE).append(FROM).append(SPACE)
+		.append(tableName).append(SPACE)
+		.append(WHERE).append(SPACE).append(where).toString();
 	}
 
 	public static String deleteByPrimaryKeys(Class<?> clazz) throws DBException {
@@ -203,7 +198,7 @@ public class SQLUtil {
 	 * 
 	 * @param value
 	 * @param tableName
-	 * @param columns
+	 * @param columnNames
 	 * @return sql,参数集合
 	 * @throws DBException
 	 */
@@ -212,7 +207,7 @@ public class SQLUtil {
 		if (sqlTable == null) {
 			throw new DBException(DBErrCode.ERR_SQL_UPDATE, "create update sql error");
 		}
-		if (sqlTable.getParimaryKeys() == null || sqlTable.getParimaryKeys().length == 0) {
+		if (sqlTable.getPrimaryKeys() == null || sqlTable.getPrimaryKeys().length == 0) {
 			throw new DBException(DBErrCode.ERR_SQL_NOPRIMARY, "create update sql without primary key");
 		}
 
@@ -223,7 +218,7 @@ public class SQLUtil {
 
 		tableName = tableName != null && tableName.length() > 0 ? tableName : sqlTable.getDbName() + SPOT + sqlTable.getTableName();
 
-		List<Object> params = new ArrayList<Object>();
+		List<Object> params = new ArrayList<>();
 		StringBuilder columns = new StringBuilder();
 		StringBuilder values = new StringBuilder();
 		for (String column : sqlTable.getColumnMap().keySet()) {
@@ -275,9 +270,9 @@ public class SQLUtil {
 	/**
 	 * 根据主键查询
 	 * 
-	 * @param value
+	 * @param clazz
 	 * @param tableName
-	 * @param columns
+	 * @param columnNames
 	 * @return
 	 * @throws DBException
 	 */
@@ -286,7 +281,7 @@ public class SQLUtil {
 		if (sqlTable == null) {
 			throw new DBException(DBErrCode.ERR_SQL_SELECT, "create select sql error");
 		}
-		if (sqlTable.getParimaryKeys() == null || sqlTable.getParimaryKeys().length == 0) {
+		if (sqlTable.getPrimaryKeys() == null || sqlTable.getPrimaryKeys().length == 0) {
 			throw new DBException(DBErrCode.ERR_SQL_NOPRIMARY, "create select sql without primary key");
 		}
 
@@ -300,18 +295,17 @@ public class SQLUtil {
 		}
 
 		StringBuilder where = new StringBuilder();
-		for (String pk : sqlTable.getParimaryKeys()) {
+		for (String pk : sqlTable.getPrimaryKeys()) {
 			if (where.length() > 0) {
 				where.append(SPACE).append(AND).append(SPACE);
 			}
 			where.append(pk).append(EQUAL).append(QUESTION);
 		}
 
-		StringBuilder sql = new StringBuilder();
-		sql.append(SELECT).append(select).append(SPACE);
-		sql.append(FROM).append(SPACE).append(tableName).append(SPACE);
-		sql.append(WHERE).append(SPACE).append(where);
-		return sql.toString();
+		return new StringBuilder()
+		.append(SELECT).append(select).append(SPACE)
+		.append(FROM).append(SPACE).append(tableName).append(SPACE)
+		.append(WHERE).append(SPACE).append(where).toString();
 	}
 
 	public static String selectByPrimaryKeys(Class<?> clazz) throws DBException {

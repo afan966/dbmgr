@@ -16,9 +16,9 @@ public class SQLTable implements Cloneable {
 	private String dbName;
 	private String tableName;
 	private String javaType;
-	private String[] parimaryKeys;
+	private String[] primaryKeys;
 	// columnName
-	private Map<String, SQLColumn> columnMap = new HashMap<String, SQLColumn>();
+	private Map<String, SQLColumn> columnMap = new HashMap<>();
 
 	public SQLColumn getSqlColumnByColumn(String columnName) throws DBException {
 		SQLColumn column = columnMap.get(columnName);
@@ -54,8 +54,8 @@ public class SQLTable implements Cloneable {
 		try {
 			// 深度克隆
 			obj = (SQLTable) super.clone();
-			obj.parimaryKeys = parimaryKeys.clone();
-			obj.columnMap = new HashMap<String, SQLColumn>();
+			obj.primaryKeys = primaryKeys.clone();
+			obj.columnMap = new HashMap<>();
 			for (String column : columnMap.keySet()) {
 				obj.columnMap.put(column, columnMap.get(column).clone());
 			}
@@ -89,12 +89,12 @@ public class SQLTable implements Cloneable {
 		this.javaType = javaType;
 	}
 
-	public String[] getParimaryKeys() {
-		return parimaryKeys;
+	public String[] getPrimaryKeys() {
+		return primaryKeys;
 	}
 
-	public void setParimaryKeys(String[] parimaryKeys) {
-		this.parimaryKeys = parimaryKeys;
+	public void setPrimaryKeys(String[] primaryKeys) {
+		this.primaryKeys = primaryKeys;
 	}
 
 	public Map<String, SQLColumn> getColumnMap() {

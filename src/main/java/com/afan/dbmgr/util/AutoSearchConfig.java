@@ -3,6 +3,7 @@ package com.afan.dbmgr.util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 尝试在工作目录，jar同级目录下找到指定格式结尾的文件
@@ -26,7 +27,7 @@ public class AutoSearchConfig {
 	/**
 	 * 
 	 * @param fileName
-	 * @param searchReturn找到就返回
+	 * @param searchReturn 找到就返回
 	 * @return
 	 */
 	public static List<File> search(String fileName, boolean searchReturn){
@@ -42,7 +43,7 @@ public class AutoSearchConfig {
 					rootPath = rootFile.getParent();
 				}
 			}
-			List<File> result = new ArrayList<File>();
+			List<File> result = new ArrayList<>();
 			findFiles(rootPath, result, fileName, searchReturn);
 			return result;
 		}catch(Exception e){
@@ -56,7 +57,7 @@ public class AutoSearchConfig {
 		if (!dir.exists() || !dir.isDirectory()) {
 			return;
 		}
-		for (File file : dir.listFiles()) {
+		for (File file : Objects.requireNonNull(dir.listFiles())) {
 			if(fileList.size()>0)
 				break;
 			if (file.isDirectory()) {

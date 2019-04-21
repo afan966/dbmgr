@@ -31,9 +31,9 @@ import com.alibaba.druid.sql.dialect.mysql.ast.statement.MySqlUpdateStatement;
 import com.alibaba.druid.util.JdbcConstants;
 
 /**
- * 
- * @author cf
- * @Description: PreparedStatement包装 用于标准参数自动注入，和JDBC实际执行
+ * PreparedStatement包装 用于标准参数自动注入，和JDBC实际执行
+ * @author afan
+ *
  */
 public class StatementWrapper {
 	private static final Logger logger = LoggerFactory.getLogger(StatementWrapper.class);
@@ -167,22 +167,21 @@ public class StatementWrapper {
 				SQLExpr valExpr = insertValues.get(j);
 				setVarParam(i, colExpr, valExpr, sqlTable);
 			}
-			for (int j = 0; j < duplicateKeyColumns.size(); j++) {
-				SQLBinaryOpExpr opExpr = (SQLBinaryOpExpr) duplicateKeyColumns.get(j);
-				SQLExpr colExpr = opExpr.getLeft();
-				SQLExpr valExpr = opExpr.getRight();
-				setVarParam(i, colExpr, valExpr, sqlTable);
-			}
+            for (SQLExpr duplicateKeyColumn : duplicateKeyColumns) {
+                SQLBinaryOpExpr opExpr = (SQLBinaryOpExpr) duplicateKeyColumn;
+                SQLExpr colExpr = opExpr.getLeft();
+                SQLExpr valExpr = opExpr.getRight();
+                setVarParam(i, colExpr, valExpr, sqlTable);
+            }
 		} else if (stmt instanceof MySqlUpdateStatement) {
 			MySqlUpdateStatement update = (MySqlUpdateStatement) stmt;
-			List<SQLUpdateSetItem> itemList = update.getItems();
 			SQLBinaryOpExpr whereExpr = (SQLBinaryOpExpr)update.getWhere();
-			for (int j = 0; j < itemList.size(); j++) {
-				SQLUpdateSetItem item = itemList.get(j);
-				SQLExpr colExpr = item.getColumn();
-				SQLExpr valExpr = item.getValue();
-				setVarParam(i, colExpr, valExpr, sqlTable);
-			}
+            List<SQLUpdateSetItem> itemList = update.getItems();
+            for (SQLUpdateSetItem item : itemList) {
+                SQLExpr colExpr = item.getColumn();
+                SQLExpr valExpr = item.getValue();
+                setVarParam(i, colExpr, valExpr, sqlTable);
+            }
 			setWhereParam(i, whereExpr, sqlTable);
 		} else if (stmt instanceof MySqlDeleteStatement) {
 			MySqlDeleteStatement delete = (MySqlDeleteStatement) stmt;
@@ -228,7 +227,7 @@ public class StatementWrapper {
 
 	private void setParam(int i, SQLColumn sqlColumn) throws DBException {
 		try {
-			ConvertHandler handler = DruidMgr.getInstance().getHhandler(sqlColumn.getHandler());
+			ConvertHandler handler = DruidMgr.getInstance().getHandler(sqlColumn.getHandler());
 			if (handler == null) {
 				logger.error("field:" + sqlColumn.getFieldName() + " can not find handler : [" + sqlColumn.getHandler() + "]");
 				throw new DBException(DBErrCode.ERR_WRESULT_SET, "field:" + sqlColumn.getFieldName() + " can not find handler : [" + sqlColumn.getHandler() + "]");

@@ -38,7 +38,7 @@ public class DefaultConnect extends DBConnMgr implements DBConnect {
 			logger.error("init connection error", e);
 		}
 		long used = (System.currentTimeMillis() - t1);
-		if (used > MINTIME) {
+		if (used > MIN_TIME) {
 			logger.debug("init {} conn used:{}ms", dbName, used);
 		}
 	}
@@ -54,6 +54,7 @@ public class DefaultConnect extends DBConnMgr implements DBConnect {
 		}
 	}
 	
+	@Override
 	public PreparedStatement prepareStatement(String sql) throws DBException {
 		this.sql = sql;
 		this.params = null;

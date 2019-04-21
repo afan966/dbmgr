@@ -1,0 +1,20 @@
+2019-04-21 00:08:48.989 [main] DEBUG [DruidMgr.java:107] - load afan.druid.config.location--->>>>:D:\Workspaces\Idea2018\dbmgr\src\main\resources\druid.properties
+2019-04-21 00:08:50.048 [main] DEBUG [DruidMgr.java:209] - init [jdbc] data source success
+2019-04-21 00:08:50.081 [main] DEBUG [DruidMgr.java:125] - init jdbc type handler: [,com.afan.dbmgr.handler.DefaultConvertHandler] success
+2019-04-21 00:08:50.085 [main] DEBUG [DruidMgr.java:125] - init jdbc type handler: [date,com.afan.dbmgr.handler.DateConvertHandler] success
+2019-04-21 00:08:51.965 [main] DEBUG [DefaultConnect.java:42] - init null conn used:1866ms
+2019-04-21 00:10:45.206 [main] DEBUG [DruidMgr.java:107] - load afan.druid.config.location--->>>>:D:\Workspaces\Idea2018\dbmgr\src\main\resources\druid.properties
+2019-04-21 00:10:46.066 [main] DEBUG [DruidMgr.java:209] - init [jdbc] data source success
+2019-04-21 00:10:46.096 [main] DEBUG [DruidMgr.java:125] - init jdbc type handler: [,com.afan.dbmgr.handler.DefaultConvertHandler] success
+2019-04-21 00:10:46.099 [main] DEBUG [DruidMgr.java:125] - init jdbc type handler: [date,com.afan.dbmgr.handler.DateConvertHandler] success
+2019-04-21 00:10:47.785 [main] DEBUG [DefaultConnect.java:42] - init null conn used:1675ms
+2019-04-21 00:13:44.855 [main] DEBUG [DruidMgr.java:107] - load afan.druid.config.location--->>>>:D:\Workspaces\Idea2018\dbmgr\src\main\resources\druid.properties
+2019-04-21 00:13:45.728 [main] DEBUG [DruidMgr.java:209] - init [jdbc] data source success
+2019-04-21 00:13:45.767 [main] DEBUG [DruidMgr.java:125] - init jdbc type handler: [,com.afan.dbmgr.handler.DefaultConvertHandler] success
+2019-04-21 00:13:45.771 [main] DEBUG [DruidMgr.java:125] - init jdbc type handler: [date,com.afan.dbmgr.handler.DateConvertHandler] success
+2019-04-21 00:13:47.501 [main] DEBUG [DefaultConnect.java:42] - init null conn used:1720ms
+2019-04-21 00:14:39.529 [main] DEBUG [DruidMgr.java:107] - load afan.druid.config.location--->>>>:D:\Workspaces\Idea2018\dbmgr\src\main\resources\druid.properties
+2019-04-21 00:14:40.424 [main] DEBUG [DruidMgr.java:209] - init [jdbc] data source success
+2019-04-21 00:14:40.455 [main] DEBUG [DruidMgr.java:125] - init jdbc type handler: [,com.afan.dbmgr.handler.DefaultConvertHandler] success
+2019-04-21 00:14:40.458 [main] DEBUG [DruidMgr.java:125] - init jdbc type handler: [date,com.afan.dbmgr.handler.DateConvertHandler] success
+2019-04-21 00:14:42.207 [main] DEBUG [DefaultConnect.java:42] - init null conn used:1740ms

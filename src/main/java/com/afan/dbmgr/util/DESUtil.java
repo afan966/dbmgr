@@ -27,7 +27,7 @@ public class DESUtil {
     /**
      *   
      * 生成密钥key对象
-     * @param KeyStr 密钥字符串 
+     * @param keyStr 密钥字符串
      * @return 密钥对象 
      * @throws InvalidKeyException   
      * @throws NoSuchAlgorithmException   
@@ -39,8 +39,7 @@ public class DESUtil {
         DESKeySpec desKey = new DESKeySpec(input);
         //创建一个密匙工厂，然后用它把DESKeySpec转换成
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
-        SecretKey securekey = keyFactory.generateSecret(desKey);
-        return securekey;
+        return keyFactory.generateSecret(desKey);
     }
 
     private static int parse(char c) {

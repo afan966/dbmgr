@@ -18,6 +18,6 @@ public @interface DBTable {
 
 	String table();//数据库表名
 	
-	String[] primaryClumns() default {};
+	String[] primaryColumns() default {};
 	
 }

@@ -1,15 +1,11 @@
 package com.afan.dbmgr.handler;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import com.afan.dbmgr.DBException;
 import com.afan.dbmgr.DBHandler;
 import com.afan.dbmgr.config.DBErrCode;
 import com.afan.dbmgr.config.SQLColumn;
-import com.afan.dbmgr.handler.ConvertHandler;
+
+import java.sql.*;
 
 /**
  * 日期类型转换器（sql.Data 和 util.Data 互相转换）

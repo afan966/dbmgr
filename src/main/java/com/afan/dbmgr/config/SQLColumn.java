@@ -1,7 +1,5 @@
 package com.afan.dbmgr.config;
 
-import java.lang.reflect.Method;
-
 import com.afan.dbmgr.util.StringUtil;
 
 /**
@@ -18,11 +16,10 @@ public class SQLColumn implements Cloneable {
 	private String columnName;// 数据库字段名称
 	private Object value;// 值
 	private Object defaultValue;// 默认值
+
 	private boolean autoIncrement;// 是否自动增长列
 	private boolean primaryKey;// 是否主键
 
-	private Method getMethod;// get方法
-	private Method setMethod;// set方法
 	private String handler;
 
 	public SQLColumn clone() {
@@ -31,7 +28,7 @@ public class SQLColumn implements Cloneable {
 			// 深度克隆
 			obj = (SQLColumn) super.clone();
 			obj.value = null;
-			// obj.defaultValue = defaultValue;//defaultvalue不可变
+			// obj.defaultValue = defaultValue;//default value不可变
 		} catch (CloneNotSupportedException e) {
 			e.printStackTrace();
 		}
@@ -148,16 +145,8 @@ public class SQLColumn implements Cloneable {
 		this.value = value;
 	}
 
-	public boolean isAutoIncrement() {
-		return autoIncrement;
-	}
-
 	public void setAutoIncrement(boolean autoIncrement) {
 		this.autoIncrement = autoIncrement;
-	}
-
-	public boolean isPrimaryKey() {
-		return primaryKey;
 	}
 
 	public void setPrimaryKey(boolean primaryKey) {
@@ -172,20 +161,12 @@ public class SQLColumn implements Cloneable {
 		this.jdbcJavaType = jdbcJavaType;
 	}
 
-	public Method getGetMethod() {
-		return getMethod;
+	public boolean isAutoIncrement() {
+		return autoIncrement;
 	}
 
-	public void setGetMethod(Method getMethod) {
-		this.getMethod = getMethod;
-	}
-
-	public Method getSetMethod() {
-		return setMethod;
-	}
-
-	public void setSetMethod(Method setMethod) {
-		this.setMethod = setMethod;
+	public boolean isPrimaryKey() {
+		return primaryKey;
 	}
 
 	public String getHandler() {

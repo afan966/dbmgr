@@ -54,11 +54,12 @@ public class GenertorMysql {
 //		includeTable.add("seller");
 //		create(connUrl, targetPackage, targetProjectSrc, includeTable);
 		
-		connUrl = "jdbc:mysql://192.168.81.130:3306/afan_config";
-		targetPackage = "com.afan.conf.enity";
-		targetProjectSrc = "E:\\Workspaces\\MyEclipse11\\afan.conf\\src\\main\\java\\";
-		includeTable = new HashSet<String>();
-		includeTable.add("buyer_stat310101");
+		connUrl = "jdbc:mysql://192.168.199.159:3306/sionou_uc";
+		targetPackage = "com.afan.enity";
+		targetProjectSrc = "D:\\Workspaces\\Idea2018\\dbmgr\\src\\test\\java\\";
+		includeTable = new HashSet<>();
+		includeTable.add("user");
+		includeTable.add("user_info");
 		create(connUrl, targetPackage, targetProjectSrc, null);
 	}
 	
@@ -174,7 +175,7 @@ public class GenertorMysql {
 				con.append("import com.afan.dbmgr.DBColumn;\r\n");
 				String pks = "";
 				if (tablePksMap.get(dt) != null && tablePksMap.get(dt).size() > 0) {
-					pks = ", primaryClumns={";
+					pks = ", primaryColumns={";
 					String pk = null;
 					for (String p : tablePksMap.get(dt)) {
 						if (pk == null)

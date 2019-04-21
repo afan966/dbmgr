@@ -22,9 +22,9 @@ public abstract class DBConnMgr {
 	private static final Logger logger = LoggerFactory.getLogger(DBConnMgr.class);
 	
 	//日志输出时间标准
-	protected static final int MINTIME = 10;
-	protected static final int NORMAL = 100;
-	protected static final int LARGETIME = 1000;
+	protected static final int MIN_TIME = 10;
+	protected static final int NORMAL_TIME = 100;
+	protected static final int LARGE_TIME = 1000;
 
 	public static final int conRetryTime = 10;// 链接失败重试次数
 
@@ -227,7 +227,8 @@ public abstract class DBConnMgr {
 					logger.error("create conn error{}, retry:{}...", e.getMessage(), retry);
 					try {
 						Thread.sleep(retry * 1000L);
-					} catch (InterruptedException ie) {
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
 					}
 				} else {
 					throw e;

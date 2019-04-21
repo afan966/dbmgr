@@ -1,0 +1,93 @@
+2019-04-21 00:08:51.649 - {conn-10001} connected
+2019-04-21 00:08:51.657 - {conn-10001, stmt-20000} created
+2019-04-21 00:08:51.915 - {conn-10001, stmt-20000} executed. 
+SELECT 'x'
+2019-04-21 00:08:51.916 - {conn-10001, stmt-20000, rs-50000} query executed. 256.292656 millis. 
+SELECT 'x'
+2019-04-21 00:08:51.916 - {conn-10001, stmt-20000, rs-50000} open
+2019-04-21 00:08:51.921 - {conn-10001, stmt-20000, rs-50000} Header: [x]
+2019-04-21 00:08:51.922 - {conn-10001, stmt-20000, rs-50000} Result: [x]
+2019-04-21 00:08:51.923 - {conn-10001, stmt-20000, rs-50000} closed
+2019-04-21 00:08:51.924 - {conn-10001, stmt-20000} closed
+2019-04-21 00:08:51.965 - {conn-10001} pool-connect
+2019-04-21 00:08:52.032 - {conn-10001, pstmt-20001} created. 
+insert into sionou_uc.user(nick,pazzwd,createTime,cellphone,userCode,status) values(?,?,?,?,?,?)
+2019-04-21 00:08:52.046 - {conn-10001, pstmt-20001} clearParameters. 
+2019-04-21 00:08:52.117 - {conn-10001, pstmt-20001} Parameters : [陈烦, 123456, null, 15968185312, , 0]
+2019-04-21 00:08:52.117 - {conn-10001, pstmt-20001} Types : [VARCHAR, VARCHAR, TIMESTAMP, VARCHAR, VARCHAR, INTEGER]
+2019-04-21 00:08:52.189 - {conn-10001, pstmt-20001} closed
+2019-04-21 00:08:52.189 - {conn-10001} pool-recycle
+2019-04-21 00:10:47.468 - {conn-10001} connected
+2019-04-21 00:10:47.476 - {conn-10001, stmt-20000} created
+2019-04-21 00:10:47.712 - {conn-10001, stmt-20000} executed. 
+SELECT 'x'
+2019-04-21 00:10:47.712 - {conn-10001, stmt-20000, rs-50000} query executed. 234.709194 millis. 
+SELECT 'x'
+2019-04-21 00:10:47.713 - {conn-10001, stmt-20000, rs-50000} open
+2019-04-21 00:10:47.720 - {conn-10001, stmt-20000, rs-50000} Header: [x]
+2019-04-21 00:10:47.722 - {conn-10001, stmt-20000, rs-50000} Result: [x]
+2019-04-21 00:10:47.723 - {conn-10001, stmt-20000, rs-50000} closed
+2019-04-21 00:10:47.724 - {conn-10001, stmt-20000} closed
+2019-04-21 00:10:47.785 - {conn-10001} pool-connect
+2019-04-21 00:10:47.865 - {conn-10001, pstmt-20001} created. 
+insert into sionou_uc.user(nick,pazzwd,createTime,cellphone,userCode,status) values(?,?,?,?,?,?)
+2019-04-21 00:10:47.878 - {conn-10001, pstmt-20001} clearParameters. 
+2019-04-21 00:10:47.951 - {conn-10001, pstmt-20001} Parameters : [陈烦, 123456, 2019-04-21 00:10:46.102, 15968185312, , 0]
+2019-04-21 00:10:47.951 - {conn-10001, pstmt-20001} Types : [VARCHAR, VARCHAR, TIMESTAMP, VARCHAR, VARCHAR, INTEGER]
+2019-04-21 00:10:47.958 - {conn-10001, pstmt-20001} executed. 
+INSERT INTO sionou_uc.user (nick, pazzwd, createTime, cellphone, userCode
+	, status)
+VALUES ('陈烦', '123456', '2019-04-21 00:10:46.102', '15968185312', ''
+	, 0)
+2019-04-21 00:10:47.959 - {conn-10001, pstmt-20001} update executed. effort 1. 8.374079 millis. 
+insert into sionou_uc.user(nick,pazzwd,createTime,cellphone,userCode,status) values(?,?,?,?,?,?)
+2019-04-21 00:10:47.960 - {conn-10001, pstmt-20001} closed
+2019-04-21 00:10:47.960 - {conn-10001} pool-recycle
+2019-04-21 00:13:47.168 - {conn-10001} connected
+2019-04-21 00:13:47.176 - {conn-10001, stmt-20000} created
+2019-04-21 00:13:47.429 - {conn-10001, stmt-20000} executed. 
+SELECT 'x'
+2019-04-21 00:13:47.430 - {conn-10001, stmt-20000, rs-50000} query executed. 252.091504 millis. 
+SELECT 'x'
+2019-04-21 00:13:47.431 - {conn-10001, stmt-20000, rs-50000} open
+2019-04-21 00:13:47.440 - {conn-10001, stmt-20000, rs-50000} Header: [x]
+2019-04-21 00:13:47.441 - {conn-10001, stmt-20000, rs-50000} Result: [x]
+2019-04-21 00:13:47.442 - {conn-10001, stmt-20000, rs-50000} closed
+2019-04-21 00:13:47.443 - {conn-10001, stmt-20000} closed
+2019-04-21 00:13:47.500 - {conn-10001} pool-connect
+2019-04-21 00:13:47.564 - {conn-10001, pstmt-20001} created. 
+update user set nick = ? where userId = ?
+2019-04-21 00:13:47.590 - {conn-10001, pstmt-20001} Parameters : [哈哈哈, 1001]
+2019-04-21 00:13:47.590 - {conn-10001, pstmt-20001} Types : [VARCHAR, INTEGER]
+2019-04-21 00:13:47.695 - {conn-10001, pstmt-20001} executed. 
+UPDATE user
+SET nick = '哈哈哈'
+WHERE userId = 1001
+2019-04-21 00:13:47.695 - {conn-10001, pstmt-20001} update executed. effort 0. 106.129958 millis. 
+update user set nick = ? where userId = ?
+2019-04-21 00:13:47.696 - {conn-10001, pstmt-20001} closed
+2019-04-21 00:13:47.697 - {conn-10001} pool-recycle
+2019-04-21 00:14:41.871 - {conn-10001} connected
+2019-04-21 00:14:41.881 - {conn-10001, stmt-20000} created
+2019-04-21 00:14:42.147 - {conn-10001, stmt-20000} executed. 
+SELECT 'x'
+2019-04-21 00:14:42.148 - {conn-10001, stmt-20000, rs-50000} query executed. 264.646941 millis. 
+SELECT 'x'
+2019-04-21 00:14:42.149 - {conn-10001, stmt-20000, rs-50000} open
+2019-04-21 00:14:42.156 - {conn-10001, stmt-20000, rs-50000} Header: [x]
+2019-04-21 00:14:42.157 - {conn-10001, stmt-20000, rs-50000} Result: [x]
+2019-04-21 00:14:42.158 - {conn-10001, stmt-20000, rs-50000} closed
+2019-04-21 00:14:42.159 - {conn-10001, stmt-20000} closed
+2019-04-21 00:14:42.207 - {conn-10001} pool-connect
+2019-04-21 00:14:42.256 - {conn-10001, pstmt-20001} created. 
+update user set nick = ? where userId = ?
+2019-04-21 00:14:42.282 - {conn-10001, pstmt-20001} Parameters : [哈哈哈, 100001]
+2019-04-21 00:14:42.283 - {conn-10001, pstmt-20001} Types : [VARCHAR, INTEGER]
+2019-04-21 00:14:42.355 - {conn-10001, pstmt-20001} executed. 
+UPDATE user
+SET nick = '哈哈哈'
+WHERE userId = 100001
+2019-04-21 00:14:42.355 - {conn-10001, pstmt-20001} update executed. effort 1. 73.216105 millis. 
+update user set nick = ? where userId = ?
+2019-04-21 00:14:42.356 - {conn-10001, pstmt-20001} closed
+2019-04-21 00:14:42.357 - {conn-10001} pool-recycle

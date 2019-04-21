@@ -125,7 +125,7 @@ public class AfanConnect extends DefaultConnect {
 		for (Object param : values) {
 			if (param instanceof ArrayList) {
 				List<?> ps = (ArrayList<?>)param;
-				if(ps == null || ps.size() ==0){
+				if(ps.size() == 0){
 					throw new DBException(DBErrCode.ERR_BATCH_PARAM_NULL, "batch param is null");
 				}
 				for (Object p : (ArrayList<?>)param) {
